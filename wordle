@@ -1,0 +1,64 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+int main() {
+    ifstream in("palavras.txt", fstream::in);
+    string array[10000];
+    for(int j=0;j<10000;j++){
+        in>>array[j];
+    }
+    string chave;
+    int num;
+    cin >> num;
+    chave=array[num];
+    string guess;
+    int guessCount = 0;
+    bool outOfGuess = false;
+    int guessLimit = 5;
+    string word;
+    string notChave;
+
+
+    while(guess != chave && !outOfGuess) {
+        if (guessCount < guessLimit) {
+            cin >> guess;
+            string guessii = guess;
+            int len = guess.length();
+            for (int i = 0; i < len; i++) {
+                if (guess[i] == chave[i]) {
+                    guessii[i]=guess[i];
+                }
+                else {
+                    char letter = chave.find(guess[i]);
+                    if (guess[i] !=chave[letter]) {
+                        guessii[i] = '*';
+                        char erro = notChave.find(guess[i]);
+                        if(guess[i]!= notChave[erro])
+                            notChave +=guess[i];
+
+
+                    }
+                    else
+                        guessii[i] = tolower(guess[i]);
+                }
+
+            }
+            cout<<guessii<<" ("<<notChave<<")"<<endl;
+            guessCount++;
+        }
+        else
+            outOfGuess = true;
+
+    }
+    if (outOfGuess)
+        cout << "PERDEU! " << chave << endl;
+    else
+        cout << "GANHOU!" << endl;
+
+    in.close();
+    return 0;
+}
+
