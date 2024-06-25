@@ -1,0 +1,100 @@
+#include <iostream>
+#include <list>
+using namespace std;
+class Classe{
+private:
+    int Ida;
+    int Id;
+    static int Count;
+public:
+    Classe(){
+        Ida=++Count;
+    }
+    Classe(int idp){
+        if(idp<0)
+            Id=Ida=idp;
+        else
+            Ida=++Count;
+    }
+    int getID(){
+        return Ida;
+    }
+    int getIdf(){
+        return Id;
+    }
+    static int getCount(){
+        return Count;
+    }
+    void* getLoc(){
+        return this;
+    }
+    ~Classe(){
+        Count--;
+    }
+};
+
+int Classe::Count=0;
+
+int main() {
+    list<Classe*> lista;
+    char comando;
+
+    while(cin>>comando){
+        switch(comando){
+            case 'A':{
+                lista.push_back(new Classe());
+                auto it=--lista.end();
+                cout<<(*it)->getID()<<" "<<(*it)->getLoc()<<endl;
+                break;
+            }
+            case 'C':{
+                int idp;
+                cin>>idp;
+                if(idp<0) {
+                    lista.push_front(new Classe(idp));
+                    cout<<lista.front()->getIdf()<<" "<<lista.front()->getLoc()<<endl;
+                }
+                else
+                    cout<<"ERRO"<<endl;
+                break;
+            }
+            case 'R':{
+                if(lista.empty())
+                    cout<<"ERRO"<<endl;
+                else{
+                    auto del =lista.front();
+                    lista.pop_front();
+                    cout<<del->getID()<<" "<<del->getLoc()<<endl;
+                }
+                break;
+            }
+            case 'N':{
+                cout<<lista.size()<<endl;
+                break;
+            }
+            case 'P':{
+                int pos;
+                cin>>pos;
+                int tam=lista.size();
+                if(pos<0||pos>tam)
+                    cout<<"ERRO"<<endl;
+                else{
+                    auto i = next(lista.begin(),pos-1);
+                    cout<<(*i)->getID()<<" "<<(*i)->getLoc()<<endl;
+                }
+                break;
+            }
+            case 'L':{
+                for(auto& ob : lista){
+                    cout<<ob->getID()<<" "<<ob->getLoc()<<endl;
+                }
+                break;
+            }
+            case 'E':{
+                return 0;
+            }
+        }
+    }
+    
+    return 0;
+}
